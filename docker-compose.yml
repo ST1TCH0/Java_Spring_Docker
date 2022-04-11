@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  reverse_proxy:
+    container_name: proxy
+    build:
+      context: .
+      dockerfile: proxyDockerfile
+    ports:
+      - 8085:80
+    networks:
+      backend:
+        aliases:
+          - app
+  application:
+    container_name: app
+    build:
+      context: .
+      dockerfile: appDockerfile
+    networks:
+      backend:
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/16
+        gateway: 172.18.0.1

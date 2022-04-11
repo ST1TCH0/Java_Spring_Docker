@@ -1,0 +1,26 @@
+FROM ubuntu
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+ARG FINAL_DEST="/var/www/html"
+
+RUN apt update
+
+RUN apt-get update
+RUN apt-get update
+RUN apt-get install -y apache2 apache2-utils
+RUN apt-get install -y iptables
+RUN apt install -y default-jre
+RUN apt-get clean
+
+COPY ./gateway.jar /tmp
+COPY ./marks.jar /tmp
+COPY ./models.jar /tmp
+
+
+COPY ./run.sh /tmp
+RUN chmod 777 /tmp/run.sh
+
+COPY ./Lab4/ /var/www/html 
+
+CMD ["bash", "/tmp/run.sh"]
